@@ -22,16 +22,16 @@ public class InspectionsDAO implements IDAO {
 
 	DBCollection collection;
 
-	public InspectionsDAO( MongoClient client ){
+	public InspectionsDAO( MongoClient client ) throws NullPointerException {
 		Objects.requireNonNull( client, () -> "Client provided cannot be null" );
 		collection = client.getDB( "city" ).getCollection( "inspections" );
-		
 	}
 
 	@Override
-	public boolean create( DBObject item ) {
+	public boolean create( DBObject item ) throws MongoException {
 		Objects.requireNonNull( item, () -> "Item to create must not be null" );
 		WriteResult result = collection.insert( item );
+		// Since this is a runtime exception, it is up to the developer to be able to handle it if necessary
 		if ( result.getError() != null && !result.getError().isEmpty() ) {
 			throw new MongoException( result.getError() );
 		}
