@@ -52,9 +52,8 @@ public class InspectionsDAO implements IDAO {
 	}
 
 	@Override
-	public DBObject delete(DBObject item) {
+	public DBObject delete( DBObject item ) {
 		Objects.requireNonNull( item, () -> "Item to delete must not be null" );
-		WriteResult result = collection.remove( item );
 		return collection.findAndRemove( item );
 	}
 	
