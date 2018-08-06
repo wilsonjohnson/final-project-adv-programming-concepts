@@ -26,9 +26,17 @@ public class App {
 
 		update.append("business_name", "Business Place");
 
-		System.out.println( "Creating: " + INSPECTIONS.create( test ) );
-		System.out.println( "Reading:  " + INSPECTIONS.read( query ).map( Objects::toString ).collect( Collectors.joining( ",\n", "[\n", "\n]")) );
-		System.out.println( "Updating: " + INSPECTIONS.update( test, update ) );
-		System.out.println( "Deleting: " + INSPECTIONS.delete( test ) );
+		attempt( () -> System.out.println( "Creating: " + INSPECTIONS.create( test ) ) );
+		attempt( () -> System.out.println( "Reading:  " + INSPECTIONS.read( query ).map( Objects::toString ).collect( Collectors.joining( ",\n", "[\n", "\n]")) ) );
+		attempt( () -> System.out.println( "Updating: " + INSPECTIONS.update( test, update ) ) );
+		attempt( () -> System.out.println( "Deleting: " + INSPECTIONS.delete( test ) ) );
+	}
+
+	private static void attempt( Runnable run ) {
+		try {
+			run.run();
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
 	}
 }

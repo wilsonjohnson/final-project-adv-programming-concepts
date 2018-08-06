@@ -1,19 +1,14 @@
 package com.snhu.app.service;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
-import com.mongodb.QueryBuilder;
-import com.mongodb.WriteResult;
-import com.snhu.app.util.DBObjectUtil;
 
 /**
  * InspectionsDAO
@@ -28,31 +23,27 @@ public class InspectionsDAO implements IDAO {
 	}
 
 	@Override
-	public boolean create( DBObject item ) throws MongoException {
+	public boolean create( DBObject item ) throws MongoException, NullPointerException  {
 		Objects.requireNonNull( item, () -> "Item to create must not be null" );
-		WriteResult result = collection.insert( item );
-		// Since this is a runtime exception, it is up to the developer to be able to handle it if necessary
-		if ( result.getError() != null && !result.getError().isEmpty() ) {
-			throw new MongoException( result.getError() );
-		}
+		collection.insert( item );
 		return true;
 	}
 
 	@Override
-	public Stream< DBObject > read(DBObject find) {
+	public Stream< DBObject > read(DBObject find) throws NullPointerException {
 		Objects.requireNonNull( find, () -> "Item to read must not be null" );
 		DBCursor cursor = collection.find( find );
 		return StreamSupport.stream( cursor.spliterator(), false );
 	}
 
 	@Override
-	public DBObject update( DBObject query, DBObject update ) {
+	public DBObject update( DBObject query, DBObject update ) throws NullPointerException {
 		Objects.requireNonNull( query, () -> "Item to update must not be null" );
 		return collection.findAndModify( query, update );
 	}
 
 	@Override
-	public DBObject delete( DBObject item ) {
+	public DBObject delete( DBObject item ) throws NullPointerException {
 		Objects.requireNonNull( item, () -> "Item to delete must not be null" );
 		return collection.findAndRemove( item );
 	}
