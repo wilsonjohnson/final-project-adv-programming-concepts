@@ -10,9 +10,12 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.ParallelScanOptions;
 import com.mongodb.ServerAddress;
+import com.snhu.app.service.InspectionsDAO;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -24,7 +27,9 @@ import java.net.UnknownHostException;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class App {
-	
+	public static MongoClient CLIENT;
+	public static InspectionsDAO INSPECTIONS;
+
 	public static void create_document(BasicDBObject doc) {
 		try {
 			MongoClient mongoClient = new MongoClient( "localhost" );
@@ -41,7 +46,23 @@ public class App {
 	}
 	
 	public static void main( String[] args ) {
-		BasicDBObject doc = new BasicDBObject("keyName", "test value data");
-		create_document(doc);
+		try {
+			CLIENT = new MongoClient( "localhost" );
+			INSPECTIONS = new InspectionsDAO( CLIENT );
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+
+		BasicDBObject test = new BasicDBObject( "id", "5299-2016-TEST" );
+		BasicDBObject update = (BasicDBObject) test.copy();
+		BasicDBObject query = new BasicDBObject( "id", "5299-2016-ENFO" );
+
+		update.append("business_name", "Business Place");
+
+		System.out.println( "Creating: " + INSPECTIONS.create( test ) );
+		System.out.println( "Creating: " + INSPECTIONS.read( query ).map( Objects::toString ).collect( Collectors.joining( ",\n", "[\n", "\n]")) );
+		System.out.println( "Creating: " + INSPECTIONS.update( test, update ) );
+		System.out.println( "Creating: " + INSPECTIONS.read( test ).map( Objects::toString ).collect( Collectors.joining( ",\n", "[\n", "\n]")) );
+		System.out.println( "Creating: " + INSPECTIONS.delete( test ) );
 	}
 }

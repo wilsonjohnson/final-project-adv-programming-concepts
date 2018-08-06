@@ -1,6 +1,7 @@
 package com.snhu.app.service;
 
 import java.util.Map;
+import java.util.stream.Stream;
 
 import com.mongodb.DBObject;
 
@@ -9,7 +10,7 @@ import com.mongodb.DBObject;
  */
 public interface IDAO {
 	public boolean create( DBObject item );
-	public DBObject read( DBObject find );
-	public boolean update( DBObject item );
-	public boolean delete( DBObject item );
+	public Stream< DBObject > read( DBObject find );
+	public DBObject update( DBObject query, DBObject update );
+	public DBObject delete( DBObject item );
 }

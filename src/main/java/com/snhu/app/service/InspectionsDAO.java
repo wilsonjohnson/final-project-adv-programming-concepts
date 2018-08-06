@@ -2,9 +2,12 @@ package com.snhu.app.service;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
@@ -36,18 +39,23 @@ public class InspectionsDAO implements IDAO {
 	}
 
 	@Override
-	public DBObject read(DBObject find) {
-		return null;
+	public Stream< DBObject > read(DBObject find) {
+		Objects.requireNonNull( find, () -> "Item to read must not be null" );
+		DBCursor cursor = collection.find( find );
+		return StreamSupport.stream( cursor.spliterator(), false );
 	}
 
 	@Override
-	public boolean update(DBObject item) {
-		return false;
+	public DBObject update( DBObject query, DBObject update ) {
+		Objects.requireNonNull( query, () -> "Item to update must not be null" );
+		return collection.findAndModify( query, update );
 	}
 
 	@Override
-	public boolean delete(DBObject item) {
-		return false;
+	public DBObject delete(DBObject item) {
+		Objects.requireNonNull( item, () -> "Item to delete must not be null" );
+		WriteResult result = collection.remove( item );
+		return collection.findAndRemove( item );
 	}
 	
 }
