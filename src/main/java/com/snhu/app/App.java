@@ -11,7 +11,9 @@ import com.mongodb.MongoClient;
 import com.mongodb.ParallelScanOptions;
 import com.mongodb.ServerAddress;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.StreamSupport;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -26,9 +28,9 @@ public class App {
 	public static void create_document(BasicDBObject doc) {
 		try {
 			MongoClient mongoClient = new MongoClient( "localhost" );
-			DB db = mongoClient.getDB( "myDB" );
-			DBCollection coll = db.getCollection("myCollection");
-			coll.insert(doc);
+			DB db = mongoClient.getDB( "city" );
+			DBCollection coll = db.getCollection("inspections");
+			StreamSupport.stream( coll.find().spliterator(), false ).map( Objects::toString ).forEach( System.out::println );
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
