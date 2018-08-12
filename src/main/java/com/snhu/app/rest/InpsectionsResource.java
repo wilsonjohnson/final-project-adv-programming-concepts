@@ -1,5 +1,6 @@
 package com.snhu.app.rest;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.mongodb.BasicDBObjectBuilder;
@@ -51,7 +52,11 @@ public class InpsectionsResource {
 		try {
 			log.debug( "Looking Up: {}",  businessName );
 			DBObject object = BasicDBObjectBuilder.start( "business_name", businessName ).get();
-			return ResponseEntity.ok().body( "" + inspectionsDAO.read( object ).map( inspectionAdapter::toJava ).collect( Collectors.toList() ) );
+			return ResponseEntity.ok().body( "" + inspectionsDAO.read( object )
+				.map( inspectionAdapter::toJava )
+				.filter( Optional::isPresent )
+				.map( Optional::get )
+				.collect( Collectors.toList() ) );
 		} catch ( Exception e ) {
 			log.error( "", e );
 			return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( e.getMessage() );
