@@ -14,12 +14,16 @@ import org.springframework.data.annotation.AccessType.Type;
  * Tuple
  */
 @AccessType( Type.PROPERTY )
-@JsonComponent
 public class Tuple < FIRST, SECOND > {
 	@Transient
 	private final FIRST first;
 	@Transient
 	private final SECOND second;
+
+	public Tuple(){
+		this.first = null;
+		this.second = null;
+	}
 
 	public Tuple( FIRST first, SECOND second ) {
 		this.first = first;
