@@ -54,11 +54,13 @@ public class InpsectionsResource {
 		try {
 			log.debug( "Looking Up: {}",  businessName );
 			DBObject object = BasicDBObjectBuilder.start( "business_name", businessName ).get();
-			return ResponseEntity.ok().body( inspectionsDAO.read( object )
+			List< Inspection > inspections = inspectionsDAO.read( object )
+				.peek( o -> log.debug( "Found: {}", o ) )
 				.map( inspectionAdapter::toJava )
 				.filter( Optional::isPresent )
 				.map( Optional::get )
-				.collect( Collectors.toList() ) );
+				.collect( Collectors.toList() );
+			return ResponseEntity.ok().body( inspections );
 		} catch ( Exception e ) {
 			log.error( "", e );
 			return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).build();
