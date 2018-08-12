@@ -9,8 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * Inspection
  */
 @JsonPropertyOrder( { "id", "certificate_number", "business_name", "date", "result", "address", "comments" } )
-public class Inspection {
-
+public class Inspection extends Document {
 	private String id;
 	private long certificateNumber;
 	private String businessName;
