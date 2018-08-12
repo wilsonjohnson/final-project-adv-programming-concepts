@@ -17,7 +17,7 @@ public class Application {
 	public static IDAO INSPECTIONS;
 	
 	public static void main( String[] args ) {
-		SpringApplication.run( App.class, args );
+		SpringApplication.run( Application.class, args );
 		
 		// try {
 		// 	CLIENT = new MongoClient( "localhost" );
