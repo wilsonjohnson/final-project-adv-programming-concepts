@@ -10,6 +10,8 @@ import java.util.Optional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.snhu.app.model.Inspection;
@@ -32,8 +34,11 @@ public class InspectionAdapter implements Adapter<Inspection> {
 	@Override
 	public Optional< Inspection > toJava( DBObject object ) {
 		try {
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.findAndRegisterModules();
+			ObjectMapper mapper = new ObjectMapper()
+				.registerModule( new Jdk8Module() )
+				.registerModule( new JavaTimeModule() )
+				.registerModule( new ParameterNamesModule() );
+
 			Object date = object.get("date");
 			if( date instanceof String ){
 				String temp = (String) date;
