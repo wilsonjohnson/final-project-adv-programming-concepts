@@ -2,8 +2,10 @@ package com.snhu.app.model;
 
 import java.util.function.Function;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.AccessType.Type;
@@ -12,6 +14,7 @@ import org.springframework.data.annotation.AccessType.Type;
  * Tuple
  */
 @AccessType( Type.PROPERTY )
+@JsonComponent
 public class Tuple < FIRST, SECOND > {
 	@Transient
 	private final FIRST first;
@@ -30,8 +33,7 @@ public class Tuple < FIRST, SECOND > {
 	/**
 	 * @return the first
 	 */
-	@Transient
-	@JsonIgnore
+	@JsonAlias( "string1" )
 	public FIRST getFirst() {
 		return first;
 	}
@@ -39,8 +41,7 @@ public class Tuple < FIRST, SECOND > {
 	/**
 	 * @return the second
 	 */
-	@Transient
-	@JsonIgnore
+	@JsonAlias( "string2" )
 	public SECOND getSecond() {
 		return second;
 	}
