@@ -2,6 +2,7 @@ package com.snhu.app.adapter;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -36,7 +37,7 @@ public class InspectionAdapter implements Adapter<Inspection> {
 				if( temp == null || temp.isEmpty() ){
 					object.put( "date", null );
 				} else {
-					object.put( "date", LocalDateTime.parse( temp, FORMAT ) );
+					object.put( "date", LocalDate.parse( temp, FORMAT ).atStartOfDay() );
 				}
 			} else if( date instanceof Date ){
 				Date temp = (Date) date;
