@@ -1,8 +1,10 @@
 package com.snhu.app.rest;
 
 import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 import com.snhu.app.service.InspectionsDAO;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +23,16 @@ public class InpsectionsResource {
 	@Autowired
 	InspectionsDAO inspectionsDAO;
 
+	@Autowired
+	Logger log;
+
 	@PostMapping( path = "/create", consumes = "application/json", produces = "application/json" )
-	public ResponseEntity< String > create( DBObject item ){
+	public ResponseEntity< String > create( String item ){
 		try {
-			return ResponseEntity.ok().body( "" + inspectionsDAO.create( item ) );
+			return ResponseEntity.ok().body( "" + inspectionsDAO.create( ( DBObject ) JSON.parse( item ) ) );
 		} catch ( Exception e ) {
 			Throwable trace = e.fillInStackTrace();
+			log.error( "", e );
 			return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( trace.getMessage() );
 		}
 	}
