@@ -3,7 +3,6 @@ package com.snhu.app.adapter;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
@@ -15,7 +14,6 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.snhu.app.model.Inspection;
-import com.snhu.app.util.FormatUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

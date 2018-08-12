@@ -3,9 +3,7 @@ package com.snhu.app.model;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * Inspection
@@ -24,7 +22,6 @@ public class Inspection extends Document {
 	/**
 	 * @return the businessName
 	 */
-	@JsonInclude(Include.NON_NULL)
 	@JsonAlias("business_name")
 	public String getBusinessName() {
 		return businessName;
@@ -40,7 +37,6 @@ public class Inspection extends Document {
 	/**
 	 * @return the certificateNumber
 	 */
-	@JsonInclude(Include.NON_NULL)
 	@JsonAlias("certificate_number")
 	public long getCertificateNumber() {
 		return certificateNumber;
@@ -56,7 +52,6 @@ public class Inspection extends Document {
 	/**
 	 * @return the comments
 	 */
-	@JsonInclude(Include.NON_NULL)
 	public String getComments() {
 		return comments;
 	}
@@ -71,7 +66,6 @@ public class Inspection extends Document {
 	/**
 	 * @return the date
 	 */
-	@JsonInclude(Include.NON_NULL)
 	public LocalDateTime getDate() {
 		return date;
 	}
@@ -100,7 +94,6 @@ public class Inspection extends Document {
 	/**
 	 * @return the result
 	 */
-	@JsonInclude(Include.NON_NULL)
 	public String getResult() {
 		return result;
 	}
@@ -115,7 +108,6 @@ public class Inspection extends Document {
 	/**
 	 * @return the address
 	 */
-	@JsonInclude(Include.NON_NULL)
 	public Address getAddress() {
 		return address;
 	}
@@ -130,7 +122,6 @@ public class Inspection extends Document {
 	/**
 	 * @return the sector
 	 */
-	@JsonInclude(Include.NON_NULL)
 	public String getSector() {
 		return sector;
 	}
