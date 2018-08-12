@@ -29,11 +29,11 @@ public class InpsectionsResource {
 	@PostMapping( path = "/create", consumes = "application/json", produces = "application/json" )
 	public ResponseEntity< String > create( String item ){
 		try {
+			log.debug( "Recieved: {}",  item );
 			return ResponseEntity.ok().body( "" + inspectionsDAO.create( ( DBObject ) JSON.parse( item ) ) );
 		} catch ( Exception e ) {
-			Throwable trace = e.fillInStackTrace();
 			log.error( "", e );
-			return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( trace.getMessage() );
+			return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( e.getMessage() );
 		}
 	}
 
