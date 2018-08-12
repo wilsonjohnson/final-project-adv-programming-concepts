@@ -1,5 +1,6 @@
 package com.snhu.app.rest;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -7,6 +8,7 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.snhu.app.adapter.InspectionAdapter;
+import com.snhu.app.model.Inspection;
 import com.snhu.app.service.InspectionsDAO;
 
 import org.slf4j.Logger;
@@ -48,18 +50,18 @@ public class InpsectionsResource {
 	}
 
 	@GetMapping( "/read" )
-	public ResponseEntity<String> read( @RequestParam("business_name") String businessName ){
+	public ResponseEntity< List< Inspection > > read( @RequestParam("business_name") String businessName ){
 		try {
 			log.debug( "Looking Up: {}",  businessName );
 			DBObject object = BasicDBObjectBuilder.start( "business_name", businessName ).get();
-			return ResponseEntity.ok().body( "" + inspectionsDAO.read( object )
+			return ResponseEntity.ok().body( inspectionsDAO.read( object )
 				.map( inspectionAdapter::toJava )
 				.filter( Optional::isPresent )
 				.map( Optional::get )
 				.collect( Collectors.toList() ) );
 		} catch ( Exception e ) {
 			log.error( "", e );
-			return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( e.getMessage() );
+			return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).build();
 		}
 	}
 
