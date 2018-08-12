@@ -13,12 +13,14 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
 /**
  * InspectionsDAO
  */
 @RequestScope
+@Component
 public class InspectionsDAO implements IDAO {
 
 	DBCollection collection;
