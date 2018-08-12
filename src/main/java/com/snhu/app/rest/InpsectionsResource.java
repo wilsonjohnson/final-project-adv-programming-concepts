@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
@@ -13,6 +14,7 @@ import com.snhu.app.service.InspectionsDAO;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,8 +70,20 @@ public class InpsectionsResource {
 	}
 
 	@GetMapping( "/update" )
-	public ResponseEntity<String> update(){
-		return ResponseEntity.status( HttpStatus.NOT_IMPLEMENTED ).body( "NOT IMPLEMENTED" );
+	public ResponseEntity< Inspection > update(  @RequestParam("id") String id,  @RequestParam("result") String result  ){
+		try {
+			BasicDBObject query = new BasicDBObject( "id", id );
+			BasicDBObject update = new BasicDBObject( "result", result);
+			Optional< Inspection > inspection = inspectionAdapter.toJava( inspectionsDAO.update( query, update ) );
+			inspection.orElseThrow( NotFoundException::new );
+			return ResponseEntity.ok().body( inspection.get() );
+		} catch ( NotFoundException e ){
+			log.error( "", e );
+			return ResponseEntity.notFound().build();
+		} catch ( Exception e ) {
+			log.error( "", e );
+			return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).build();
+		}
 	}
 
 	@GetMapping( "/delete" )
