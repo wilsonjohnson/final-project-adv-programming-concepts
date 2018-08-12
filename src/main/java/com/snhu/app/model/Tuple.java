@@ -2,11 +2,14 @@ package com.snhu.app.model;
 
 import java.util.function.Function;
 
+import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.annotation.AccessType.Type;
 
 /**
  * Tuple
  */
+@AccessType( Type.PROPERTY )
 public class Tuple < FIRST, SECOND > {
 	@Transient
 	private final FIRST first;
