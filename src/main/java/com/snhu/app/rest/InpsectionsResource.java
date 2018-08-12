@@ -22,11 +22,11 @@ public class InpsectionsResource {
 	InspectionsDAO inspectionsDAO;
 
 	@PostMapping( path = "/create", consumes = "application/json", produces = "application/json" )
-	public ResponseEntity<Boolean> create( DBObject item ){
+	public ResponseEntity< String > create( DBObject item ){
 		try {
-			return ResponseEntity.ok().body( inspectionsDAO.create( item ) );
+			return ResponseEntity.ok().body( "" + inspectionsDAO.create( item ) );
 		} catch ( Exception e ) {
-			return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( e );
+			return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( e.getMessage() );
 		}
 	}
 
