@@ -24,8 +24,8 @@ public class Inspection extends Document {
 	/**
 	 * @return the businessName
 	 */
-	@JsonAlias("business_name")
 	@JsonInclude(Include.NON_NULL)
+	@JsonAlias("business_name")
 	public String getBusinessName() {
 		return businessName;
 	}
@@ -40,8 +40,8 @@ public class Inspection extends Document {
 	/**
 	 * @return the certificateNumber
 	 */
-	@JsonAlias("certificate_number")
 	@JsonInclude(Include.NON_NULL)
+	@JsonAlias("certificate_number")
 	public long getCertificateNumber() {
 		return certificateNumber;
 	}

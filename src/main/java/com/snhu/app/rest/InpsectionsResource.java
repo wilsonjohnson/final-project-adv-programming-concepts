@@ -73,7 +73,7 @@ public class InpsectionsResource {
 	public ResponseEntity< Inspection > update(  @RequestParam("id") String id,  @RequestParam("result") String result  ){
 		try {
 			BasicDBObject query = new BasicDBObject( "id", id );
-			BasicDBObject update = new BasicDBObject( "result", result);
+			DBObject update = BasicDBObjectBuilder.start( "$set", new BasicDBObject( "result", result ) ).get();
 			Optional< Inspection > inspection = inspectionAdapter.toJava( inspectionsDAO.update( query, update ) );
 			inspection.orElseThrow( NotFoundException::new );
 			return ResponseEntity.ok().body( inspection.get() );
