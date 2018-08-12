@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * Inspection
  */
-@JsonPropertyOrder( { "id", "certificate_number", "business_name", "date", "result", "address", "comments" } )
+@JsonPropertyOrder( { "id", "certificate_number", "business_name", "date", "result", "address", "comments", "sector" } )
 public class Inspection extends Document {
 	private String id;
 	private long certificateNumber;
@@ -17,6 +17,7 @@ public class Inspection extends Document {
 	private String result;
 	private Address address;
 	private String comments;
+	private String sector;
 
 	/**
 	 * @return the businessName
@@ -118,4 +119,17 @@ public class Inspection extends Document {
 		this.address = address;
 	}
 
+	/**
+	 * @return the sector
+	 */
+	public String getSector() {
+		return sector;
+	}
+
+	/**
+	 * @param sector the sector to set
+	 */
+	public void setSector(String sector) {
+		this.sector = sector;
+	}
 }
