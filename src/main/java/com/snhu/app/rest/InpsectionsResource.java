@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,8 +27,8 @@ public class InpsectionsResource {
 	@Autowired
 	Logger log;
 
-	@PostMapping( path = "/create", consumes = "application/json", produces = "application/json" )
-	public ResponseEntity< String > create( String item ){
+	@PostMapping( path = "/create", consumes = "application/json", produces = "text/plain" )
+	public ResponseEntity< String > create( @RequestBody String item ){
 		try {
 			log.debug( "Recieved: {}",  item );
 			return ResponseEntity.ok().body( "" + inspectionsDAO.create( ( DBObject ) JSON.parse( item ) ) );
