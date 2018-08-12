@@ -58,7 +58,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>com.snhu.app.App</mainClass>
+							<mainClass>com.snhu.app.Application</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
@@ -83,7 +83,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>com.snhu.app.App</mainClass>
+							<mainClass>>com.snhu.app.Application</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
