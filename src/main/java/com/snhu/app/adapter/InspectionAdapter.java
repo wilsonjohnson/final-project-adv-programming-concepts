@@ -9,9 +9,11 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.snhu.app.model.Inspection;
+import com.snhu.app.util.FormatUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,18 +32,18 @@ public class InspectionAdapter implements Adapter<Inspection> {
 	@Override
 	public Optional< Inspection > toJava( DBObject object ) {
 		try {
-			ObjectMapper mapper = new ObjectMapper();
+			ObjectMapper mapper = new ObjectMapper().registerModule( new Jdk8Module() );
 			Object date = object.get("date");
 			if( date instanceof String ){
 				String temp = (String) date;
 				if( temp == null || temp.isEmpty() ){
 					object.put( "date", null );
 				} else {
-					object.put( "date", LocalDate.parse( temp, FORMAT ).atStartOfDay() );
+					object.put( "date", LocalDate.parse( temp, FORMAT ).atStartOfDay().format( FormatUtil.FORMATTER ) );
 				}
 			} else if( date instanceof Date ){
 				Date temp = (Date) date;
-				object.put( "date", Timestamp.from( temp.toInstant() ).toLocalDateTime() );
+				object.put( "date", Timestamp.from( temp.toInstant() ).toLocalDateTime().format( FormatUtil.FORMATTER ) );
 			}
 			return Optional.ofNullable( mapper.readValue( object.toString() , Inspection.class ) );
 		} catch ( Exception e ){
