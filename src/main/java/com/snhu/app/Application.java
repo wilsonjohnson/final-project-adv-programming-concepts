@@ -12,7 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class App {
+public class Application {
 	public static MongoClient CLIENT;
 	public static IDAO INSPECTIONS;
 	
