@@ -40,11 +40,11 @@ public class InspectionAdapter implements Adapter<Inspection> {
 				if( temp == null || temp.isEmpty() ){
 					object.put( "date", null );
 				} else {
-					object.put( "date", LocalDate.parse( temp, FORMAT ).atStartOfDay().format( FormatUtil.FORMATTER ) );
+					object.put( "date", LocalDate.parse( temp, FORMAT ).atStartOfDay().format( DateTimeFormatter.ISO_LOCAL_DATE_TIME ) );
 				}
 			} else if( date instanceof Date ){
 				Date temp = (Date) date;
-				object.put( "date", Timestamp.from( temp.toInstant() ).toLocalDateTime().format( FormatUtil.FORMATTER ) );
+				object.put( "date", Timestamp.from( temp.toInstant() ).toLocalDateTime().format( DateTimeFormatter.ISO_LOCAL_DATE_TIME ) );
 			}
 			return Optional.ofNullable( mapper.readValue( object.toString() , Inspection.class ) );
 		} catch ( Exception e ){
