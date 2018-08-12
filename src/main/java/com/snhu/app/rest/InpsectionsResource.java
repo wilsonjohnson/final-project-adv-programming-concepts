@@ -26,7 +26,7 @@ public class InpsectionsResource {
 		try {
 			return ResponseEntity.ok().body( inspectionsDAO.create( item ) );
 		} catch ( Exception e ) {
-			return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( false );
+			return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( e );
 		}
 	}
 
