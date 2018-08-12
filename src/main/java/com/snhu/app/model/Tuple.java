@@ -8,7 +8,9 @@ import org.springframework.data.annotation.Transient;
  * Tuple
  */
 public class Tuple < FIRST, SECOND > {
+	@Transient
 	private final FIRST first;
+	@Transient
 	private final SECOND second;
 
 	public Tuple( FIRST first, SECOND second ) {
