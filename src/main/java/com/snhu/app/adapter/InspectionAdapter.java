@@ -32,7 +32,8 @@ public class InspectionAdapter implements Adapter<Inspection> {
 	@Override
 	public Optional< Inspection > toJava( DBObject object ) {
 		try {
-			ObjectMapper mapper = new ObjectMapper().registerModule( new Jdk8Module() );
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.findAndRegisterModules();
 			Object date = object.get("date");
 			if( date instanceof String ){
 				String temp = (String) date;
