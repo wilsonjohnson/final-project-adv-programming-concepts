@@ -87,7 +87,18 @@ public class InpsectionsResource {
 	}
 
 	@GetMapping( "/delete" )
-	public ResponseEntity<String> delete(){
-		return ResponseEntity.status( HttpStatus.NOT_IMPLEMENTED ).body( "NOT IMPLEMENTED" );
+	public ResponseEntity< Inspection > delete( @RequestParam("id") String id ){
+		try {
+			BasicDBObject item = new BasicDBObject( "id", id );
+			Optional< Inspection > inspection = inspectionAdapter.toJava( inspectionsDAO.delete( item ) );
+			inspection.orElseThrow( NotFoundException::new );
+			return ResponseEntity.ok().body( inspection.get() );
+		} catch ( NotFoundException e ){
+			log.error( "", e );
+			return ResponseEntity.notFound().build();
+		} catch ( Exception e ) {
+			log.error( "", e );
+			return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).build();
+		}
 	}
 }

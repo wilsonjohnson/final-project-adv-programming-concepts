@@ -5,13 +5,18 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import org.springframework.boot.jackson.JsonComponent;
+
 /**
  * Inspection
  */
+@JsonComponent
 @JsonPropertyOrder({ "id", "certificate_number", "business_name", "date", "result", "address", "comments", "sector" })
 public class Inspection extends Document {
 	private String id;
+	@JsonAlias("certificate_number")
 	private long certificateNumber;
+	@JsonAlias("business_name")
 	private String businessName;
 	private LocalDateTime date;
 	private String result;
