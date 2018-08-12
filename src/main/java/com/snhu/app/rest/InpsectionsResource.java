@@ -1,7 +1,11 @@
 package com.snhu.app.rest;
 
+import java.util.stream.Collectors;
+
+import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
+import com.snhu.app.adapter.InspectionAdapter;
 import com.snhu.app.service.InspectionsDAO;
 
 import org.slf4j.Logger;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -23,6 +28,9 @@ public class InpsectionsResource {
 
 	@Autowired
 	InspectionsDAO inspectionsDAO;
+
+	@Autowired
+	InspectionAdapter inspectionAdapter;
 
 	@Autowired
 	Logger log;
@@ -39,8 +47,15 @@ public class InpsectionsResource {
 	}
 
 	@GetMapping( "/read" )
-	public ResponseEntity<String> read(){
-		return ResponseEntity.status( HttpStatus.NOT_IMPLEMENTED ).body( "NOT IMPLEMENTED" );
+	public ResponseEntity<String> read( @RequestParam("business_name") String businessName ){
+		try {
+			log.debug( "Looking Up: {}",  businessName );
+			DBObject object = BasicDBObjectBuilder.start( "business_name", businessName ).get();
+			return ResponseEntity.ok().body( "" + inspectionsDAO.read( object ).map( inspectionAdapter::toJava ).collect( Collectors.toList() ) );
+		} catch ( Exception e ) {
+			log.error( "", e );
+			return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( e.getMessage() );
+		}
 	}
 
 	@GetMapping( "/update" )

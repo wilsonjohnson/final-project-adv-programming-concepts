@@ -54,7 +54,7 @@ public class InspectionsDAO implements IDAO {
 	}
 
 	@Override
-	public Stream< DBObject > read(DBObject find) throws NullPointerException {
+	public Stream< DBObject > read( DBObject find ) throws NullPointerException {
 		Objects.requireNonNull( find, () -> "Item to read must not be null" );
 		DBCursor cursor = collection.find( find );
 		return StreamSupport.stream( cursor.spliterator(), false );

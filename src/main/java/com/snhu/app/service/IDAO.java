@@ -1,10 +1,12 @@
 package com.snhu.app.service;
 
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
+import com.mongodb.ReflectionDBObject;
 
 /**
  * IDAO
