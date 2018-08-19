@@ -13,7 +13,10 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
+import com.mongodb.QueryBuilder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
@@ -31,11 +34,15 @@ public class StocksDAO implements IDAO {
 	@Autowired
 	MongoClient client;
 
+	@Autowired
+	Logger log;
+
 	public StocksDAO() {
 	}
 
 	public StocksDAO( MongoClient client ) throws NullPointerException {
 		Objects.requireNonNull( client, () -> "Client provided cannot be null" );
+		log = LoggerFactory.getLogger( this.getClass() );
 		this.client = client;
 		setupCollection();
 	}
@@ -77,6 +84,12 @@ public class StocksDAO implements IDAO {
 		return SUCCESS;
 	}
 	
+	public Stream< DBObject > findAveragesFromTo( Double from, Double to ){
+		DBObject query = QueryBuilder.start( "50-Day Simple Moving Average" ).lessThan( from ).greaterThan( to ).get();
+		log.debug( "Query: {}", query );
+		return read( query );
+	}
+
 	private DBObject tickerQuery( String ticker ) {
 		return new BasicDBObject( "Ticker", ticker );
 	}

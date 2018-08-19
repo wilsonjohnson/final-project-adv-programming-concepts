@@ -26,6 +26,7 @@ public class ApplicationConfig {
 	MongoClient client;
 
 	@Bean
+	@Scope( "prototype" )
 	public MongoClient mongoClient() throws UnknownHostException {
 		return new MongoClient( "localhost" );
 	}
