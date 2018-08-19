@@ -67,8 +67,8 @@ public class AppStartup implements
 		readAndLogTicker();
 		attempt( log, () -> log.info( "Deleting: {}", stocksDAO.deleteTicker( "TEST_TICK" ) ) );
 		readAndLogTicker();
-		double from = 0D;
-		double to = 1D;
+		double from = 0.05D;
+		double to = 0.06D;
 		attempt( log, () -> log.info( "Reading Avg[ {}, {} ]: {}", from, to, 
 			stocksDAO.findAveragesFromTo(from, to)
 					.map( Objects::toString )
