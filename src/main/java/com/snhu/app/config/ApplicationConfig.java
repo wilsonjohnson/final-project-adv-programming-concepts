@@ -31,7 +31,7 @@ public class ApplicationConfig {
 	}
 
 	@Bean
-	@Qualifier( "Application Startup" )
+	@Qualifier( "appStart" )
 	@Scope( "prototype" )
 	public StocksDAO stocksDAO() {
 		return new StocksDAO( client );

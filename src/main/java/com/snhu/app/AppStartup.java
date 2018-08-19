@@ -33,10 +33,10 @@ import java.util.stream.Collectors;
  */
 @Component
 public class AppStartup implements
-	ApplicationListener< ContextRefreshedEvent >{
+	ApplicationListener< ContextRefreshedEvent > {
 
 	@Autowired
-	@Qualifier( "Application Startup" )
+	@Qualifier( "appStart" )
 	StocksDAO stocksDAO;
 
 	@Autowired
