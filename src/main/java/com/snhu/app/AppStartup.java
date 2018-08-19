@@ -8,6 +8,7 @@ import com.snhu.app.service.StocksDAO;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.context.ApplicationContext;
@@ -35,6 +36,7 @@ public class AppStartup implements
 	ApplicationListener< ContextRefreshedEvent >{
 
 	@Autowired
+	@Qualifier( "Application Startup" )
 	StocksDAO stocksDAO;
 
 	@Autowired
