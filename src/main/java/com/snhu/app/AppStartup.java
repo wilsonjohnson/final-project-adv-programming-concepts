@@ -8,6 +8,8 @@ import com.snhu.app.service.StocksDAO;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -38,12 +40,15 @@ public class AppStartup implements
 	@Autowired
 	ApplicationContext context;
 
+	@Value("classpath:/com/snhu/app/stocks_insert.json")
+	Resource stocksInsertJSON;
+
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		DBObject object;
 		try {
 			Arrays.stream( context.getResources( "classpath:/com/snhu/app/**" ) ).forEach( resource -> log.info( "Resource: {}", resource ) );
-			Path path = context.getResource( "/com/snhu/app/stocks_insert.json" ).getFile().toPath();
+			Path path = stocksInsertJSON.getFile().toPath();
 			object = (DBObject) JSON.parse( Files.lines(path).collect( Collectors.joining() ) );
 		} catch ( Exception e ) {
 			log.error( "", e );
