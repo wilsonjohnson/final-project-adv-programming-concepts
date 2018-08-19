@@ -6,9 +6,9 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.snhu.app.service.StocksDAO;
 
-import org.apache.catalina.core.ApplicationContext;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -41,7 +41,7 @@ public class AppStartup implements
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		DBObject object;
 		try {
-			Path path = Paths.get( context.getResource( "classpath:com/snhu/app/stocks_insert.json" ).toURI() );
+			Path path = Paths.get( context.getResource( "classpath:com/snhu/app/stocks_insert.json" ).getURI() );
 			object = (DBObject) JSON.parse( Files.lines(path).collect(Collectors.joining() ) );
 		} catch ( Exception e ) {
 			log.error( "", e );
