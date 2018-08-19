@@ -17,6 +17,9 @@ import org.springframework.stereotype.Component;
 
 import static com.snhu.app.util.ExceptionUtil.attempt;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,9 +50,10 @@ public class AppStartup implements
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		DBObject object;
 		try {
-			Arrays.stream( context.getResources( "classpath:/com/snhu/app/**" ) ).forEach( resource -> log.info( "Resource: {}", resource ) );
-			Path path = stocksInsertJSON.getFile().toPath();
-			object = (DBObject) JSON.parse( Files.lines(path).collect( Collectors.joining() ) );
+			Arrays.stream( context.getResources( "classpath:/com/snhu/app/**" ) )
+				.forEach( resource -> log.info( "Resource: {}", resource ) );
+			BufferedReader reader = new BufferedReader( new InputStreamReader( stocksInsertJSON.getInputStream() ) );
+			object = (DBObject) JSON.parse( reader.lines().collect( Collectors.joining() ) );
 		} catch ( Exception e ) {
 			log.error( "", e );
 			return;
