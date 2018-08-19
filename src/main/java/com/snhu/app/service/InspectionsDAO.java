@@ -47,29 +47,7 @@ public class InspectionsDAO implements IDAO {
 	}
 
 	@Override
-	public boolean create( DBObject item ) throws MongoException, NullPointerException  {
-		Objects.requireNonNull( item, () -> "Item to create must not be null" );
-		collection.insert( item );
-		return true;
+	public DBCollection getCollection() {
+		return collection;
 	}
-
-	@Override
-	public Stream< DBObject > read( DBObject find ) throws NullPointerException {
-		Objects.requireNonNull( find, () -> "Item to read must not be null" );
-		DBCursor cursor = collection.find( find );
-		return StreamSupport.stream( cursor.spliterator(), false );
-	}
-
-	@Override
-	public DBObject update( DBObject query, DBObject update ) throws NullPointerException {
-		Objects.requireNonNull( query, () -> "Item to update must not be null" );
-		return collection.findAndModify( query, update );
-	}
-
-	@Override
-	public DBObject delete( DBObject item ) throws NullPointerException {
-		Objects.requireNonNull( item, () -> "Item to delete must not be null" );
-		return collection.findAndRemove( item );
-	}
-	
 }

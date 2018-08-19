@@ -1,11 +1,13 @@
 package com.snhu.app.service;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import javax.annotation.PostConstruct;
 
+import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
@@ -27,8 +29,6 @@ import org.springframework.web.context.annotation.RequestScope;
 @RequestScope
 @Component
 public class StocksDAO implements IDAO {
-
-	private static final DBObject SUCCESS = new BasicDBObject( "success", true );
 	DBCollection collection;
 
 	@Autowired
@@ -57,31 +57,8 @@ public class StocksDAO implements IDAO {
 	}
 
 	@Override
-	public boolean create( DBObject item ) throws MongoException, NullPointerException  {
-		Objects.requireNonNull( item, () -> "Item to create must not be null" );
-		collection.insert( item );
-		return true;
-	}
-
-	@Override
-	public Stream< DBObject > read( DBObject find ) throws NullPointerException {
-		Objects.requireNonNull( find, () -> "Item to read must not be null" );
-		DBCursor cursor = collection.find( find );
-		return StreamSupport.stream( cursor.spliterator(), false );
-	}
-
-	@Override
-	public DBObject update( DBObject query, DBObject update ) throws NullPointerException {
-		Objects.requireNonNull( query, () -> "Item to update must not be null" );
-		collection.update( query, update, false, true );
-		return SUCCESS;
-	}
-
-	@Override
-	public DBObject delete( DBObject item ) throws NullPointerException {
-		Objects.requireNonNull( item, () -> "Item to delete must not be null" );
-		collection.remove( item );
-		return SUCCESS;
+	public DBCollection getCollection() {
+		return collection;
 	}
 	
 	public Stream< DBObject > findAveragesFromTo( Double from, Double to ){
@@ -91,11 +68,11 @@ public class StocksDAO implements IDAO {
 	}
 
 	private DBObject tickerQuery( String ticker ) {
-		return build( "Ticker", ticker ).get();
+		return object( "Ticker", ticker );
 	}
 
 	public DBObject updateVolume( String ticker, Long volume ) throws NullPointerException {
-		DBObject update = queryWhere( "$set" ).is( build( "Volume", volume ).get() ).get();
+		DBObject update = queryWhere( "$set" ).is( object( "Volume", volume ) ).get();
 		log.debug( "Update: {}", update );
 		return update( tickerQuery( ticker ), update );
 	}
@@ -106,5 +83,20 @@ public class StocksDAO implements IDAO {
 
 	public Stream< DBObject > readTicker( String ticker ) throws NullPointerException {
 		return read( tickerQuery( ticker ) );
+	}
+
+	public Stream< DBObject > readIndustry( String industry ) throws NullPointerException {
+		return read( queryWhere( "Industry" ).is( industry ).get() );
+	}
+
+	public Stream< DBObject > readSharesBySector( String sector ) {
+		return aggregate( pipeline(
+				queryWhere( "$match" ).is( object( "Sector", sector ) ).get(),
+				queryWhere( "$group" ).is( 
+					build( "_id", "Industry" )
+						.add( "Outstanding Shares", object(
+							"$sum", "$Shares Outstanding"
+						) ).get() ).get()
+			) );
 	}
 }

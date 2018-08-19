@@ -27,6 +27,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * AppStartup
@@ -69,13 +70,18 @@ public class AppStartup implements
 		readAndLogTicker();
 		double from = 0.051D;
 		double to = 0.052D;
-		attempt( log, () -> log.info( "Reading Avg[ {}, {} ]: {}", from, to, 
-			stocksDAO.findAveragesFromTo(from, to)
-					.map( Objects::toString )
-					.collect( Collectors.joining( ",\n", "[\n", "\n]") ) ) );
+		attempt( log, () -> log.info( "Reading Avg[ {}, {} ]: {}", from, to, joinResults( stocksDAO.findAveragesFromTo( from, to ) ) ) );
+		String industry = "Medical Laboratories & Research.";
+		attempt( log, () -> log.info( "Reading Industry ({}): {}", industry, joinResults( stocksDAO.readIndustry( industry ) ) ) );
+		String sector = "Healthcare";
+		attempt( log, () -> log.info( "Reading Sector ({}): {}", sector, joinResults( stocksDAO.readSharesBySector( sector ) ) ) );
 	}
 
 	private void readAndLogTicker(){
-		attempt( log, () -> log.info( "Reading:  {}", stocksDAO.readTicker( "TEST_TICK" ).map( Objects::toString ).collect( Collectors.joining( ",\n", "[\n", "\n]") ) ) );
+		attempt( log, () -> log.info( "Reading:  {}", joinResults( stocksDAO.readTicker( "TEST_TICK" ) ) ) );
+	}
+
+	private String joinResults( Stream<DBObject> results ){
+		return results.map( Objects::toString ).collect( Collectors.joining( ",\n", "[\n", "\n]") );
 	}
 }
