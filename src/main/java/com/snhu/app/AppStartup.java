@@ -42,8 +42,8 @@ public class AppStartup implements
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		DBObject object;
 		try {
-			Arrays.stream( context.getResources( "classpath:*" ) ).forEach( resource -> log.info( "Resource: {}", resource ) );
-			Path path = context.getResource( "classpath:stocks_insert.json" ).getFile().toPath();
+			Arrays.stream( context.getResources( "classpath:/com/snhu/app/**" ) ).forEach( resource -> log.info( "Resource: {}", resource ) );
+			Path path = context.getResource( "/com/snhu/app/stocks_insert.json" ).getFile().toPath();
 			object = (DBObject) JSON.parse( Files.lines(path).collect( Collectors.joining() ) );
 		} catch ( Exception e ) {
 			log.error( "", e );
