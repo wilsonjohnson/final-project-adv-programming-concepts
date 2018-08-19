@@ -85,17 +85,18 @@ public class StocksDAO implements IDAO {
 	}
 	
 	public Stream< DBObject > findAveragesFromTo( Double from, Double to ){
-		DBObject query = QueryBuilder.start( "50-Day Simple Moving Average" ).greaterThan( from ).lessThan( to ).get();
+		DBObject query = queryWhere( "50-Day Simple Moving Average" ).greaterThan( from ).lessThan( to ).get();
 		log.debug( "Query: {}", query );
 		return read( query );
 	}
 
 	private DBObject tickerQuery( String ticker ) {
-		return new BasicDBObject( "Ticker", ticker );
+		return build( "Ticker", ticker ).get();
 	}
 
 	public DBObject updateVolume( String ticker, Long volume ) throws NullPointerException {
-		DBObject update = BasicDBObjectBuilder.start( "$set", new BasicDBObject( "Volume", volume ) ).get();
+		DBObject update = queryWhere( "$set" ).is( build( "Volume", volume ).get() ).get();
+		log.debug( "Update: {}", update );
 		return update( tickerQuery( ticker ), update );
 	}
 
