@@ -71,7 +71,7 @@ public class AppStartup implements
 		double from = 0.051D;
 		double to = 0.052D;
 		attempt( log, () -> log.info( "Reading Avg[ {}, {} ]: {}", from, to, joinResults( stocksDAO.findAveragesFromTo( from, to ) ) ) );
-		String industry = "Medical Laboratories & Research.";
+		String industry = "Medical Laboratories & Research";
 		attempt( log, () -> log.info( "Reading Industry ({}): {}", industry, joinResults( stocksDAO.readIndustry( industry ) ) ) );
 		String sector = "Healthcare";
 		attempt( log, () -> log.info( "Reading Sector ({}): {}", sector, joinResults( stocksDAO.readSharesBySector( sector ) ) ) );

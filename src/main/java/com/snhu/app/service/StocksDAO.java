@@ -93,7 +93,7 @@ public class StocksDAO implements IDAO {
 		return aggregate( pipeline(
 				queryWhere( "$match" ).is( object( "Sector", sector ) ).get(),
 				queryWhere( "$group" ).is( 
-					build( "_id", "Industry" )
+					build( "_id", "$Industry" )
 						.add( "Outstanding Shares", object(
 							"$sum", "$Shares Outstanding"
 						) ).get() ).get()
