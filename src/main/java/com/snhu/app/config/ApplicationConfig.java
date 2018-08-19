@@ -30,8 +30,7 @@ public class ApplicationConfig {
 		return new MongoClient( "localhost" );
 	}
 
-	@Bean
-	@Qualifier( "appStart" )
+	@Bean( "appStart" )
 	@Scope( "prototype" )
 	public StocksDAO stocksDAO() {
 		return new StocksDAO( client );
