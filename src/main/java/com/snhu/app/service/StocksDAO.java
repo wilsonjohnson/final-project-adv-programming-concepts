@@ -85,7 +85,7 @@ public class StocksDAO implements IDAO {
 	}
 	
 	public Stream< DBObject > findAveragesFromTo( Double from, Double to ){
-		DBObject query = QueryBuilder.start( "50-Day Simple Moving Average" ).lessThan( from ).greaterThan( to ).get();
+		DBObject query = QueryBuilder.start( "50-Day Simple Moving Average" ).greaterThan( from ).lessThan( to ).get();
 		log.debug( "Query: {}", query );
 		return read( query );
 	}
