@@ -7,6 +7,7 @@ import java.util.stream.StreamSupport;
 import javax.annotation.PostConstruct;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -76,4 +77,20 @@ public class StocksDAO implements IDAO {
 		return SUCCESS;
 	}
 	
+	private DBObject tickerQuery( String ticker ) {
+		return new BasicDBObject( "Ticker", ticker );
+	}
+
+	public DBObject updateVolume( String ticker, Long volume ) throws NullPointerException {
+		DBObject update = BasicDBObjectBuilder.start( "$set", new BasicDBObject( "Volume", volume ) ).get();
+		return update( tickerQuery( ticker ), update );
+	}
+
+	public DBObject deleteTicker( String ticker ) throws NullPointerException {
+		return delete( tickerQuery( ticker ) );
+	}
+
+	public Stream< DBObject > readTicker( String ticker ) throws NullPointerException {
+		return read( tickerQuery( ticker ) );
+	}
 }

@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping( "/inspections" )
-public class InpsectionsResource {
+public class InspectionsResource {
 
 	@Autowired
 	InspectionsDAO inspectionsDAO;
