@@ -37,7 +37,7 @@ public class AppStartup implements
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		DBObject object;
 		try {
-			Path path = Paths.get( ClassLoader.getSystemClassLoader().getResource( "stocks_insert.json" ).toURI() );
+			Path path = Paths.get( "stocks_insert.json" );
 			object = (DBObject) JSON.parse( Files.lines(path).collect(Collectors.joining() ) );
 		} catch ( Exception e ) {
 			log.error( "", e );
