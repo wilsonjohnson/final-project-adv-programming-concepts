@@ -40,7 +40,7 @@ public class AppStartup implements
 	@Autowired
 	ApplicationContext context;
 
-	@Value("classpath:/com/snhu/app/stocks_insert.json")
+	@Value("classpath:com/snhu/app/stocks_insert.json")
 	Resource stocksInsertJSON;
 
 	@Override
