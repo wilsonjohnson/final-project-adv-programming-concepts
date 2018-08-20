@@ -53,6 +53,10 @@ public class StocksResource {
 	@Autowired
 	Logger log;
 
+	/**
+	 * creates a stock based on the passed in item
+	 * Ensures that the stock at least contains a ticker key
+	 */
 	@PostMapping(path = "/createStock", consumes = "application/json", produces = "text/plain")
 	public ResponseEntity<String> create(@RequestBody Map<String, ?> item) {
 		try {
@@ -72,6 +76,9 @@ public class StocksResource {
 		}
 	}
 
+	/**
+	 * retrieves a stock by ticker string
+	 */
 	@GetMapping("/getStock/{ticker}")
 	public ResponseEntity getStock(@PathVariable("ticker") String ticker) throws TickerNotFoundException {
 		try {
@@ -87,6 +94,9 @@ public class StocksResource {
 		}
 	}
 
+	/**
+	 * updates a stock by the ticker value and applies the changes mapping to the ticker
+	 */
 	@PutMapping("/updateStock/{ticker}")
 	public ResponseEntity<Void> update(@PathVariable("ticker") String ticker, @RequestBody Map<String, ?> changes) {
 		try {
@@ -98,6 +108,9 @@ public class StocksResource {
 		}
 	}
 
+	/**
+	 * deletes a stock for a provided ticker
+	 */
 	@DeleteMapping("/deleteStock/{ticker}")
 	public ResponseEntity<Void> deleteStock(@PathVariable("ticker") String ticker) {
 		try {
@@ -109,6 +122,9 @@ public class StocksResource {
 		}
 	}
 
+	/**
+	 * gets a stock report for a list of tickers
+	 */
 	@PostMapping("/stockReport")
 	public ResponseEntity<List<Map>> stockReport(@RequestBody Map tickers) {
 		if (tickers.containsKey("list")) {
@@ -124,6 +140,9 @@ public class StocksResource {
 		}
 	}
 
+	/**
+	 * gets the top 5 stocks portfolio for an Industry
+	 */
 	@PostMapping("/industryReport/{industry}")
 	public ResponseEntity<List<Map>> industryReport(@PathVariable("industry") String industry) {
 		List<Map> stocks = stocksDAO.readTopFiveByIndustry(industry).map(DBObject::toMap).collect(Collectors.toList());
@@ -133,6 +152,9 @@ public class StocksResource {
 		return ResponseEntity.ok(stocks);
 	}
 
+	/**
+	 * gets the top 5 stocks portfolio for a company
+	 */
 	@PostMapping("/portfolio/{company}")
 	public ResponseEntity<List<Map>> portfolio(@PathVariable("company") String company) {
 		List<Map> stocks = stocksDAO.readTopFiveByCompany(company).map(DBObject::toMap).collect(Collectors.toList());
@@ -142,6 +164,9 @@ public class StocksResource {
 		return ResponseEntity.ok(stocks);
 	}
 
+	/**
+	 * chooses between a response or throwing an exception bsed on if there are changes
+	 */
 	public <T extends Exception> ResponseEntity<Void> writeResponse(DBObject result, BodyBuilder changedResponse,
 			Supplier<T> exceptionSupplier) throws T {
 		int changed = ((int) result.get("changed"));

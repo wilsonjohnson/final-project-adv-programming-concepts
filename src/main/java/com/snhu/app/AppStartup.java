@@ -55,6 +55,9 @@ public class AppStartup implements
 		CompletableFuture.runAsync( this::doStartupTests );
 	}
 
+	/**
+	 * Startup tests for the "Wrapper application for your code" portion of the assignment
+	 */
 	private void doStartupTests(){
 		DBObject object;
 		try {
