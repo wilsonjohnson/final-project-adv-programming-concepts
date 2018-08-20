@@ -54,8 +54,7 @@ public class StocksResource {
 	Logger log;
 
 	/**
-	 * creates a stock based on the passed in item
-	 * Ensures that the stock at least contains a ticker key
+	 * creates a stock based on the passed in map and ticker value
 	 */
 	@PostMapping(path = "/createStock/{ticker}", consumes = "application/json", produces = "text/plain")
 	public ResponseEntity<String> create( @PathVariable("ticker") String ticker, @RequestBody Map<String, ?> item ) {
