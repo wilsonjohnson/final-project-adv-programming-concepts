@@ -62,8 +62,8 @@ public class StocksDAO implements IDAO {
 		return collection;
 	}
 	
-	public Stream< DBObject > findAveragesFromTo( Double from, Double to ){
-		return read( 
+	public int countAveragesFromTo( Double from, Double to ){
+		return count( 
 			queryWhere( "50-Day Simple Moving Average" )
 				.greaterThan( from )
 				.lessThan( to ).get() );

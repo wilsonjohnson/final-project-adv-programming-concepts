@@ -34,6 +34,11 @@ public interface IDAO {
 		return StreamSupport.stream( getCollection().find( find ).spliterator(), false ).peek( map -> map.removeField( "_id" ) );
 	}
 
+	public default int count( DBObject find ) throws NullPointerException {
+		Objects.requireNonNull( find, () -> "Item to read must not be null" );
+		return getCollection().find( find ).count();
+	}
+
 	public default DBObject update( DBObject query, DBObject update ) throws NullPointerException {
 		Objects.requireNonNull( query, () -> "Item to update must not be null" );
 		WriteResult result = getCollection().update( query, update, false, true );

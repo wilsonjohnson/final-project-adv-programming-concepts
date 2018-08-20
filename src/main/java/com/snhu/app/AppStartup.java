@@ -75,7 +75,7 @@ public class AppStartup implements
 		readAndLogTicker();
 		double from = 0.051D;
 		double to = 0.052D;
-		attempt( log, () -> log.info( "Reading Avg[ {}, {} ]: {}", from, to, joinResults( stocksDAO.findAveragesFromTo( from, to ) ) ) );
+		attempt( log, () -> log.info( "Reading Avg[ {}, {} ] Count: {}", from, to, stocksDAO.countAveragesFromTo( from, to ) ) );
 		String industry = "Medical Laboratories & Research";
 		attempt( log, () -> log.info( "Reading Industry ({}): {}", industry, joinResults( stocksDAO.readIndustry( industry ) ) ) );
 		String sector = "Healthcare";
