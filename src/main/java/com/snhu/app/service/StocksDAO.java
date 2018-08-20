@@ -105,6 +105,11 @@ public class StocksDAO implements IDAO {
 		return read( queryWhere( "Industry" ).is( industry ).get() );
 	}
 
+	public Stream< String > readIndustryTickers( String industry ) throws NullPointerException {
+		return read( queryWhere( "Industry" ).is( industry ).get(), object( "Ticker", 1 ) )
+			.map( o -> o.get("Ticker").toString() );
+	}
+
 	public Stream< DBObject > readTopFiveByIndustry( String company ) {
 		return aggregate( pipeline(
 				queryWhere( "$match" ).is( object( "Company", company ) ).get(),

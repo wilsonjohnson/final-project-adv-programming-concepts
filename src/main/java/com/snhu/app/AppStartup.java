@@ -77,7 +77,7 @@ public class AppStartup implements
 		double to = 0.052D;
 		attempt( log, () -> log.info( "Reading Avg[ {}, {} ] Count: {}", from, to, stocksDAO.countAveragesFromTo( from, to ) ) );
 		String industry = "Medical Laboratories & Research";
-		attempt( log, () -> log.info( "Reading Industry ({}): {}", industry, joinResults( stocksDAO.readIndustry( industry ) ) ) );
+		attempt( log, () -> log.info( "Reading Industry ({}): {}", industry, joinResults( stocksDAO.readIndustryTickers( industry ) ) ) );
 		String sector = "Healthcare";
 		attempt( log, () -> log.info( "Reading Sector ({}): {}", sector, joinResults( stocksDAO.readSharesBySector( sector ) ) ) );
 	}
@@ -86,7 +86,7 @@ public class AppStartup implements
 		attempt( log, () -> log.info( "Reading:  {}", joinResults( stocksDAO.readTicker( "TEST_TICK" ) ) ) );
 	}
 
-	private String joinResults( Stream<DBObject> results ){
+	private String joinResults( Stream<?> results ){
 		return results.map( Objects::toString ).collect( Collectors.joining( ",\n", "[\n", "\n]") );
 	}
 }
