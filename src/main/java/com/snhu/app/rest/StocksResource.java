@@ -57,15 +57,11 @@ public class StocksResource {
 	 * creates a stock based on the passed in item
 	 * Ensures that the stock at least contains a ticker key
 	 */
-	@PostMapping(path = "/createStock", consumes = "application/json", produces = "text/plain")
-	public ResponseEntity<String> create(@RequestBody Map<String, ?> item) {
+	@PostMapping(path = "/createStock/{ticker}", consumes = "application/json", produces = "text/plain")
+	public ResponseEntity<String> create( @PathVariable("ticker") String ticker, @RequestBody Map<String, ?> item ) {
 		try {
 			log.debug("Recieved: {}", item);
-			if (!item.containsKey("Ticker")) {
-				return ResponseEntity.unprocessableEntity().build();
-			}
-			String ticker = Objects.toString(item.get("Ticker"), "");
-			if (stocksDAO.create(stocksDAO.object(item))) {
+			if (stocksDAO.create( stocksDAO.build(item).add("Ticker", ticker).get() ) ) {
 				return ResponseEntity.created(new URI("/getStock/" + ticker)).build();
 			} else {
 				return ResponseEntity.ok().build();
