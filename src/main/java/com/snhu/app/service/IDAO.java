@@ -14,6 +14,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import com.mongodb.QueryBuilder;
+import com.mongodb.WriteResult;
 
 /**
  * IDAO
@@ -30,19 +31,21 @@ public interface IDAO {
 
 	public default Stream< DBObject > read( DBObject find ) throws NullPointerException {
 		Objects.requireNonNull( find, () -> "Item to read must not be null" );
-		return StreamSupport.stream( getCollection().find( find ).spliterator(), false );
+		return StreamSupport.stream( getCollection().find( find ).spliterator(), false ).peek( map -> map.removeField( "_id" ) );
 	}
 
 	public default DBObject update( DBObject query, DBObject update ) throws NullPointerException {
 		Objects.requireNonNull( query, () -> "Item to update must not be null" );
-		getCollection().update( query, update, false, true );
-		return SUCCESS;
+		WriteResult result = getCollection().update( query, update, false, true );
+		return build( "msg", result.getError() )
+					.add( "changed", result.getN()).get();
 	}
 
 	public default DBObject delete( DBObject item ) throws NullPointerException {
 		Objects.requireNonNull( item, () -> "Item to delete must not be null" );
-		getCollection().remove( item );
-		return SUCCESS;
+		WriteResult result = getCollection().remove( item );
+		return build( "msg", result.getError() )
+					.add( "changed", result.getN()).get();
 	}
 	
 	public default Stream< DBObject > aggregate( List< DBObject > pipeline ) {
@@ -63,6 +66,10 @@ public interface IDAO {
 
 	public default DBObject object( String key, Object value ){
 		return build( key, value ).get();
+	}
+
+	public default DBObject object( Map map ){
+		return build( map ).get();
 	}
 
 	public default QueryBuilder query(){

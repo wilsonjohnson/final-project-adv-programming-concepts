@@ -26,6 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -51,6 +52,10 @@ public class AppStartup implements
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
+		CompletableFuture.runAsync( this::doStartupTests );
+	}
+
+	private void doStartupTests(){
 		DBObject object;
 		try {
 			Arrays.stream( context.getResources( "classpath:/com/snhu/app/**" ) )

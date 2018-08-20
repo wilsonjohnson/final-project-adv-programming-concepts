@@ -1,6 +1,7 @@
 package com.snhu.app.service;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -62,9 +63,10 @@ public class StocksDAO implements IDAO {
 	}
 	
 	public Stream< DBObject > findAveragesFromTo( Double from, Double to ){
-		DBObject query = queryWhere( "50-Day Simple Moving Average" ).greaterThan( from ).lessThan( to ).get();
-		log.debug( "Query: {}", query );
-		return read( query );
+		return read( 
+			queryWhere( "50-Day Simple Moving Average" )
+				.greaterThan( from )
+				.lessThan( to ).get() );
 	}
 
 	private DBObject tickerQuery( String ticker ) {
@@ -72,21 +74,53 @@ public class StocksDAO implements IDAO {
 	}
 
 	public DBObject updateVolume( String ticker, Long volume ) throws NullPointerException {
-		DBObject update = queryWhere( "$set" ).is( object( "Volume", volume ) ).get();
-		log.debug( "Update: {}", update );
-		return update( tickerQuery( ticker ), update );
+		return update( 
+				tickerQuery( ticker ), 
+				queryWhere( "$set" ).is( 
+						object( "Volume", volume ) 
+					).get() );
 	}
 
 	public DBObject deleteTicker( String ticker ) throws NullPointerException {
 		return delete( tickerQuery( ticker ) );
 	}
 
+	public DBObject updateTicker( String ticker, Map changes ) throws NullPointerException {
+		return update( 
+				tickerQuery( ticker ), 
+				queryWhere( "$set" ).is(
+						object( changes )
+					).get() );
+	}
+
 	public Stream< DBObject > readTicker( String ticker ) throws NullPointerException {
 		return read( tickerQuery( ticker ) );
 	}
 
+	public Stream< DBObject > readTickers( String[] tickers ) throws NullPointerException {
+		return read ( queryWhere( "Ticker" ).in( tickers ).get() );
+	}
+
 	public Stream< DBObject > readIndustry( String industry ) throws NullPointerException {
 		return read( queryWhere( "Industry" ).is( industry ).get() );
+	}
+
+	public Stream< DBObject > readTopFiveByIndustry( String company ) {
+		return aggregate( pipeline(
+				queryWhere( "$match" ).is( object( "Company", company ) ).get(),
+				queryWhere( "$sort" ).is( 
+					object( "Performance (Year)", -1 ) ).get(),
+				queryWhere( "$limit" ).is( 5 ).get()
+			) );
+	}
+
+	public Stream< DBObject > readTopFiveByCompany( String company ) {
+		return aggregate( pipeline(
+				queryWhere( "$match" ).is( object( "Company", company ) ).get(),
+				queryWhere( "$sort" ).is( 
+					object( "Performance (Year)", -1 ) ).get(),
+				queryWhere( "$limit" ).is( 5 ).get()
+			) );
 	}
 
 	public Stream< DBObject > readSharesBySector( String sector ) {

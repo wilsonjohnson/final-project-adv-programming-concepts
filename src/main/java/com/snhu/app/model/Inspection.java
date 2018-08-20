@@ -2,7 +2,6 @@ package com.snhu.app.model;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
