@@ -1,9 +1,5 @@
 package com.snhu.app.rest;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
@@ -11,18 +7,16 @@ import com.mongodb.util.JSON;
 import com.snhu.app.adapter.InspectionAdapter;
 import com.snhu.app.model.Inspection;
 import com.snhu.app.service.InspectionsDAO;
-
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * InpsectionsResource
@@ -56,7 +50,7 @@ public class InspectionsResource {
 		try {
 			log.debug( "Looking Up: {}",  businessName );
 			DBObject object = BasicDBObjectBuilder.start( "business_name", businessName ).get();
-			List< Inspection > inspections = inspectionsDAO.read( object )
+            List<Inspection> inspections = inspectionsDAO.find(object)
 				.peek( o -> log.debug( "Found: {}", o ) )
 				.map( inspectionAdapter::toJava )
 				.filter( Optional::isPresent )
